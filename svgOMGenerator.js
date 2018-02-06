@@ -30,6 +30,8 @@
             shapeLayer: "shape",
             textLayer: "text",
             layerSection: "group",
+            artboardSection: "artboard",
+            framedGroupSection: "frame",
             layer: "image"
         };
 

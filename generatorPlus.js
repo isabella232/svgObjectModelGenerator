@@ -266,7 +266,7 @@
                             };
                         }
 
-                    } else if (layerType === "layerSection" && layer.layers) {
+                    } else if ((layerType === "layerSection" || layerType === "artboardSection" || layerType === "framedGroupSection") && layer.layers) {
                         for (i = 0; layer.layers && i < layer.layers.length; i++) {
                             childLyr = layer.layers[i];
                             patchLayerSVG(childLyr, offsetSettings, bUnderRoot);
