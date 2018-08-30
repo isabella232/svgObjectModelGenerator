@@ -55,7 +55,18 @@
             return ret;
         };
 
-        this.rasterBase64 = function (_G, docId, layerId, resolution, pixmapSettings) {
+        /**
+         * Use generator to get a PNG of the given layer
+         *
+         * @param {Generator} _G
+         * @param {number} docId
+         * @param {number} layerId
+         * @param {number} resolution
+         * @param {object} pixmapSettings
+         * @param {boolean=} useFlite use flitetranscoder to create the PNG, default: true
+         * @return {Promise}
+         */
+        this.rasterBase64 = function (_G, docId, layerId, resolution, pixmapSettings, useFlite) {
             var rasterDeferred = Q.defer();
             try {
 
@@ -97,7 +108,8 @@
                         oSettings = {
                             format: format,
                             ppi: ppi,
-                            padding: padding
+                            padding: padding,
+                            useFlite: useFlite !== false
                         };
 
                     Q.ninvoke(tmp, "tmpName").then(function (tmpPath) {
@@ -132,7 +144,7 @@
             }
         };
 
-        this.patchGenerator = function (psd, _G, compId, cropToSingleLayer, constrainToDocBounds, rootLayerId, layerScale, aErrors) {
+        this.patchGenerator = function (psd, _G, compId, cropToSingleLayer, constrainToDocBounds, rootLayerId, layerScale, aErrors, useFlite) {
             var layers = psd.layers,
                 docId = psd.id,
                 docResolution = psd.resolution || 72.2,
@@ -206,7 +218,7 @@
                                     scaleY: layerScale,
                                     scale: layerScale
                                 }, layerBndsFx, layerBndsFx);
-                            this.rasterBase64(_G, docId, layer.id, docResolution, pixmapSettings).then(function (result) {
+                            this.rasterBase64(_G, docId, layer.id, docResolution, pixmapSettings, useFlite).then(function (result) {
                                 //TBD: is image better?
                                 //layer.rawPixel = 'data:image/png;base64,' + result;
                                 layer.rawPixel = "data:img/png;base64," + result;

@@ -4,13 +4,13 @@
   "description": "An abstract SVG renderer",
   "main": "main.js",
   "generator-core-version": "~3",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/adobe-research/svgObjectModelGenerator.git"
   },
   "dependencies": {
-    "tmp": "~0.0.24"
+    "tmp": "0.0.33"
   },
   "devDependencies": {
     "blanket": "*",

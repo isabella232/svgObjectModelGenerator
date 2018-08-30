@@ -175,7 +175,8 @@
             clipToArtboardBounds,
             isResponsive,
             artboardBounds,
-            isArtboard;
+            isArtboard,
+            useFlite;
 
         compId = params.compId;
         layerSpec = params.layerSpec;
@@ -188,8 +189,8 @@
         clipToArtboardBounds = params.clipToArtboardBounds;
         isResponsive = params.isResponsive;
         artboardBounds = params.artboardBounds;
-
         isArtboard = params.isArtboard;
+        useFlite = params.useFlite;
 
         generator.evaluateJSXString("app.activeDocument.id").then(function (activeDocId) {
             if (docId !== activeDocId) {
@@ -201,12 +202,12 @@
                             cropToSingleLayer = typeof layerSpec == "number",
                             svgWriterErrors = [];
                         generatorPlus.patchGenerator(doc, generator, compId, cropToSingleLayer, constrainToDocBounds,
-                                                    layerSpec, layerScale, svgWriterErrors).then(function () {
+                                                    layerSpec, layerScale, svgWriterErrors, useFlite).then(function () {
                             if (layerSpec === "all") {
                                 layerSpec = null;
                             }
-                            logger && logger.info("SVGOMG Document: " + JSON.stringify(doc));
-                            logger && logger.info("SVGOMG Params: " + JSON.stringify(params));
+
+                            logger && logger.debug("SVGOMG Params: " + JSON.stringify(params));
                             var svgOM = OMG.extractSVGOM(doc, { layerSpec: layerSpec, errors: svgWriterErrors }),
                                 svgOut = svgWriter.printSVG(svgOM, {
                                     trimToArtBounds: cropToSingleLayer,
@@ -222,7 +223,10 @@
                                     artboardBounds: artboardBounds,
                                     isArtboard: isArtboard
                                 }, svgWriterErrors);
-                            logger && logger.info("SVGOMG Out: " + svgOut);
+
+                            logger && logger.debug("SVGOMG (truncated) %s ...",
+                                (typeof svgOut === "string") ? svgOut.substr(0, 200) : typeof svgOut);
+
                             deferedResult.resolve({
                                 svgText: svgOut,
                                 errors: svgWriterErrors
