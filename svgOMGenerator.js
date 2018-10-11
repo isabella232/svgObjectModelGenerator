@@ -26,7 +26,7 @@
         omgImage = require("./svgOMGeneratorImage.js"),
         omgStyles = require("./svgOMGeneratorStyles.js"),
         layerTypeMap = {
-            backgroundLayer: "background",
+            backgroundLayer: "image", // treat background layers as images
             shapeLayer: "shape",
             textLayer: "text",
             layerSection: "group",
