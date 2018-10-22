@@ -197,7 +197,8 @@
                     }
 
                     //bUnderRoot is to only crop to the sub-tree being generatored...
-                    if ((!cropToSingleLayer || bUnderRoot) && (layerType === "shapeLayer" || layerType === "textLayer" || layerType === "layer")) {
+                    if ((!cropToSingleLayer || bUnderRoot) && (layerType === "shapeLayer" || layerType === "textLayer" || layerType === "layer" ||
+                            layerType === "backgroundLayer")) {
 
                         Utils.extend(true, layer, { layerEffects: this.findCompLayerEffects(layer.id, layerComp) });
 
