@@ -142,9 +142,16 @@
                 cacheInfo._lastDocInfoPromise = docInfoDeferred.promise;
 
                 generator.evaluateJSXFile(__dirname + "/jsx/normalizeDoc.jsx", {}).then(function (origMode) {
+                    // normalizeDoc.jsx may fail silently by returning an empty string
+                    if (origMode === null || (typeof origMode === "string" && origMode.length < 1)) {
+                        docInfoDeferred.reject(new Error("Failed to prepare document for SVG extraction"));
+                        return;
+                    }
+
                     if (typeof origMode === "string") {
                         origMode = JSON.parse(origMode);
                     }
+
                     generator.getDocumentInfo(docId, docInfoFlags).then(function (doc) {
                         cacheInfo._lastDocInfoPromise = undefined;
                         cacheInfo._lastDocInfo = doc;
